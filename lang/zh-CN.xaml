@@ -1,0 +1,69 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib"
+                    xmlns:local="clr-namespace:Wad3_Viewer.lang">
+    <sys:String x:Key="Confirm">
+        确认
+    </sys:String>
+    <sys:String x:Key="Cancel">
+        取消
+    </sys:String>
+    <sys:String x:Key="Title">
+        WAD3文件浏览
+    </sys:String>
+    <sys:String x:Key="File">
+        文件
+    </sys:String>
+    <sys:String x:Key="Open">
+        打开
+    </sys:String>
+    <sys:String x:Key="ExportAll">
+        导出全部
+    </sys:String>
+    <sys:String x:Key="Export">
+        导出
+    </sys:String>
+    <sys:String x:Key="ImageFormat">
+        图片类型
+    </sys:String>
+    <sys:String x:Key="Browse">
+        浏览
+    </sys:String>
+    <sys:String x:Key="Exit">
+        退出
+    </sys:String>
+    <sys:String x:Key="Setting">
+        设置
+    </sys:String>
+    <sys:String x:Key="Language">
+        语言
+    </sys:String>
+    <sys:String x:Key="About">
+        关于
+    </sys:String>
+    <sys:String x:Key="Recover">
+        复原
+    </sys:String>
+    <sys:String x:Key="DefaultTips">
+        请选择纹理...
+    </sys:String>
+    <sys:String x:Key="Auth">
+        作者：Allocblock
+    </sys:String>
+    <sys:String x:Key="Version">
+        版本：1.0
+    </sys:String>
+    <sys:String x:Key="Error">
+        错误
+    </sys:String>
+    <sys:String x:Key="PathNotCorrect">
+        路径不合法！
+    </sys:String>
+    <sys:String x:Key="PathNotExists">
+        路径不存在！
+    </sys:String>
+    <sys:String x:Key="FormatNotSupported">
+        不支持的图片格式！
+    </sys:String>
+
+</ResourceDictionary>

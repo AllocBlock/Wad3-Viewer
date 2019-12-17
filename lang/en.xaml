@@ -1,0 +1,68 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib"
+                    xmlns:local="clr-namespace:Wad3_Viewer.lang">
+    <sys:String x:Key="Confirm">
+        OK
+    </sys:String>
+    <sys:String x:Key="Cancel">
+        Cancel
+    </sys:String>
+    <sys:String x:Key="Title">
+        WAD3 Viewer
+    </sys:String>
+    <sys:String x:Key="File">
+        File
+    </sys:String>
+    <sys:String x:Key="Open">
+        Open
+    </sys:String>
+    <sys:String x:Key="ExportAll">
+        Export All
+    </sys:String>
+    <sys:String x:Key="Export">
+        Export
+    </sys:String>
+    <sys:String x:Key="ImageFormat">
+        Image format
+    </sys:String>
+    <sys:String x:Key="Browse">
+        Browse
+    </sys:String>
+    <sys:String x:Key="Exit">
+        Exit
+    </sys:String>
+    <sys:String x:Key="Setting">
+        Setting
+    </sys:String>
+    <sys:String x:Key="Language">
+        Language
+    </sys:String>
+    <sys:String x:Key="About">
+        About
+    </sys:String>
+    <sys:String x:Key="Recover">
+        Recover
+    </sys:String>
+    <sys:String x:Key="DefaultTips">
+        Please select a texture...
+    </sys:String>
+    <sys:String x:Key="Auth">
+        Auth：Allocblock
+    </sys:String>
+    <sys:String x:Key="Version">
+        Version：1.0
+    </sys:String>
+    <sys:String x:Key="Error">
+        Error
+    </sys:String>
+    <sys:String x:Key="PathNotCorrect">
+        Path not correct!
+    </sys:String>
+    <sys:String x:Key="PathNotExists">
+        Path not exists!
+    </sys:String>
+    <sys:String x:Key="FormatNotSupported">
+        Format not supported
+    </sys:String>
+</ResourceDictionary>
