@@ -33,7 +33,7 @@
                 <ColumnDefinition></ColumnDefinition>
             </Grid.ColumnDefinitions>
             <Grid Grid.Column="0">
-                <ScrollViewer Margin="0" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+                <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
                     <WrapPanel Name="table" ></WrapPanel>
                 </ScrollViewer>
             </Grid>
@@ -41,28 +41,50 @@
             <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" Background="Black"/>
 
             <Grid Grid.Column="2">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="20"></RowDefinition>
-                    <RowDefinition></RowDefinition>
-                    <RowDefinition Height="20"></RowDefinition>
-                </Grid.RowDefinitions>
-                <Grid Grid.Row="0">
-                    <Button Content="{DynamicResource Recover}" Click="Reset_Click"></Button>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition Width="2"></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+
+                <Grid Grid.Column="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="20"></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition Height="20"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Grid Grid.Row="0" >
+                        <Button Content="{DynamicResource Recover}" Click="Reset_Click"></Button>
+                    </Grid>
+                    <Canvas Grid.Row="1" Name="preview" Background="Transparent" ClipToBounds="True"
+                            MouseWheel="Preview_MouseWheel"
+                            MouseLeftButtonUp="Preview_MouseLeftButtonUp" 
+                            MouseLeftButtonDown="Preview_MouseLeftButtonDown" 
+                            MouseMove="Preview_MouseMove">
+                        <Image x:Name="focusImage" Stretch="None" Canvas.Left="60">
+                            <Image.RenderTransform>
+                                <ScaleTransform x:Name="focusImageScale"></ScaleTransform>
+                            </Image.RenderTransform>
+                            <RenderOptions.BitmapScalingMode>NearestNeighbor</RenderOptions.BitmapScalingMode>
+                        </Image>
+                    </Canvas>
+                    <Grid Grid.Row="2" Background="LightGray">
+                        <TextBlock Name="focusImageName" TextWrapping="NoWrap" TextAlignment="Center" LineHeight="20" Text="{DynamicResource DefaultTips}"></TextBlock>
+                    </Grid>
                 </Grid>
-                <Canvas Grid.Row="1" Name="preview" Background="Transparent" ClipToBounds="True"
-                        MouseWheel="Preview_MouseWheel"
-                        MouseLeftButtonUp="Preview_MouseLeftButtonUp" 
-                        MouseLeftButtonDown="Preview_MouseLeftButtonDown" 
-                        MouseMove="Preview_MouseMove">
-                    <Image x:Name="focusImage" Stretch="None" Canvas.Left="60">
-                        <Image.RenderTransform>
-                            <ScaleTransform x:Name="focusImageScale"></ScaleTransform>
-                        </Image.RenderTransform>
-                        <RenderOptions.BitmapScalingMode>NearestNeighbor</RenderOptions.BitmapScalingMode>
-                    </Image>
-                </Canvas>
-                <Grid Grid.Row="2" Background="LightGray">
-                    <TextBlock Name="focusImageName" TextWrapping="NoWrap" TextAlignment="Center" LineHeight="20" Text="{DynamicResource DefaultTips}"></TextBlock>
+
+                <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" Background="Black"/>
+                
+                <Grid Grid.Column="2" Name="palatteGrid">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="20"></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Row="0" Text="{DynamicResource Palatte}" TextAlignment="Center" Background="LightGray"></TextBlock>
+                    <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+                        <WrapPanel Name="palatte"></WrapPanel>
+                    </ScrollViewer>
+                    <TextBlock Grid.Row="1" Name="palatteTip" Text="{DynamicResource NoPalatte}" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Hidden"></TextBlock>
                 </Grid>
             </Grid>
         </Grid>

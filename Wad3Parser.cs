@@ -76,7 +76,37 @@ namespace Wad3Parser
 
         public abstract void Read(ref BinaryReader f, LumpInfo lumpInfo);
     }
+    class Lump40 : Lump43 { }
+    class Lump42 : WadLump
+    {
+        public List<Color> palette;             // 256 * 3 palette data in RGB form
+        public override void Read(ref BinaryReader f, LumpInfo lumpInfo)
+        {
+            this.lumpInfo = lumpInfo;
+            f.BaseStream.Seek(lumpInfo.offset, SeekOrigin.Begin);
 
+            width = f.ReadUInt32();
+            height = f.ReadUInt32();
+
+            int size = (int)(height * width);
+
+            data = new byte[size];
+            data = f.ReadBytes(size);
+
+            colorsUsed = f.ReadUInt16();
+
+            palette = new List<Color>(256);
+            for (int i = 0; i < 256; i++)
+            {
+                Color t = new Color();
+                t.R = f.ReadByte();
+                t.G = f.ReadByte();
+                t.B = f.ReadByte();
+                t.A = 0xff;
+                palette.Add(t);
+            }
+        }
+    };
     class Lump43 : WadLump
     {
         public char[] textureName;              // 4 the number of rows
@@ -208,7 +238,15 @@ namespace Wad3Parser
             foreach (LumpInfo lumpInfo in lumpInfos)
             {
                 WadLump lump = null;
-                if (lumpInfo.type == 0x43)
+                if (lumpInfo.type == 0x40)
+                {
+                    lump = new Lump43();
+                }
+                else if (lumpInfo.type == 0x42)
+                {
+                    lump = new Lump42();
+                }
+                else if (lumpInfo.type == 0x43)
                 {
                     lump = new Lump43();
                 }
@@ -219,7 +257,7 @@ namespace Wad3Parser
                 }
                 else
                 {
-                    //MessageBox.Show("纹理类型(0x"+ Convert.ToString(lumpInfo.type, 16) + ")不被支持", "错误", 0, MessageBoxIcon.Error);
+                    MessageBox.Show("纹理类型(0x"+ Convert.ToString(lumpInfo.type, 16) + ")不被支持", "错误", 0, MessageBoxIcon.Error);
                     continue;
                 }
                 lump.Read(ref f, lumpInfo);

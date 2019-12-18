@@ -65,5 +65,12 @@
     <sys:String x:Key="FormatNotSupported">
         不支持的图片格式！
     </sys:String>
+    <sys:String x:Key="Palatte">
+        调色板
+    </sys:String>
+    <sys:String x:Key="NoPalatte">
+        无调色板
+    </sys:String>
+    
 
 </ResourceDictionary>

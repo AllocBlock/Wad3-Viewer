@@ -33,18 +33,58 @@ namespace Wad3_Viewer
         {
             InitializeComponent();
             RefreshResources();
-            Preview_Clear();
+            PreviewClear();
+            PalatteDefault();
+        }
+        private void PreviewReset()
+        {
+            focusImageScale.ScaleX = focusImageScale.ScaleY = 1.0;
+            Canvas.SetLeft(focusImage, preview.ActualWidth / 2 - focusImage.ActualWidth / 2);
+            Canvas.SetTop(focusImage, preview.ActualHeight / 2 - focusImage.ActualHeight / 2);
+        }
+        private void PreviewClear()
+        {
+            PreviewReset();
+            focusImage.Source = null;
+            focusImageName.Text = rd["DefaultTips"] as string;
+        }
+        private void RefreshResources()
+        {
+            this.Resources.MergedDictionaries.Clear();
+            this.Resources.MergedDictionaries.Add(Application.LoadComponent(new Uri(@"lang\" + (Application.Current as App).currentLang + ".xaml", UriKind.Relative)) as ResourceDictionary);
+            rd = this.Resources.MergedDictionaries[0] as ResourceDictionary;
+        }
+
+
+        private void PalatteDefault()
+        {
+            palatte.Children.Clear();
+            palatteTip.Visibility = Visibility.Visible;
+        }
+
+        private void PalatteUpdate(List<Color> newPalatte)
+        {
+            palatte.Children.Clear();
+
+            for (int i = 0; i < 256; i++)
+            {
+                this.palatte.Children.Add(new ColorBlock(newPalatte[i]));
+            }
+            palatteTip.Visibility = Visibility.Hidden;
         }
 
         public void SetFocusPic(Texture texture)
         {
-            focusImage.Source = texture.image;
+            focusImage.Source = texture.fullImage;
             Canvas.SetLeft(focusImage, preview.ActualWidth / 2 - texture.width / 2);
             Canvas.SetTop(focusImage, preview.ActualHeight / 2 - texture.height / 2);
             focusImageScale.CenterX = texture.width / 2;
             focusImageScale.CenterY = texture.height / 2;
 
-            focusImageName.Text = texture.textureName + " (0x" + Convert.ToString(texture.textureType, 16) + ")";
+            focusImageName.Text = String.Format("{0} ({1}x{2}, 0x{3})", texture.textureName, texture.width, texture.height, Convert.ToString(texture.textureType, 16));
+
+            if (texture.hasPalatte) PalatteUpdate(texture.palatte);
+            else PalatteDefault();
         }
 
         void Open_MenuClick(object sender, RoutedEventArgs e)
@@ -68,7 +108,7 @@ namespace Wad3_Viewer
                 table.Children.Add(new TextureFrame(lump, new TextureFrame.SetFocusImage(this.SetFocusPic)));
             }
 
-            Preview_Clear();
+            PreviewClear();
         }
 
         private void Preview_MouseWheel (object sender, MouseWheelEventArgs e){
@@ -110,7 +150,7 @@ namespace Wad3_Viewer
 
         private void Reset_Click(object sender, RoutedEventArgs e)
         {
-            Preview_Reset();
+            PreviewReset();
         }
 
         private void Export_MenuClick(object sender, RoutedEventArgs e)
@@ -129,12 +169,7 @@ namespace Wad3_Viewer
             AboutWindow aw = new AboutWindow(new Point(this.Left + this.ActualWidth / 2, this.Top + this.ActualHeight / 2));
             aw.ShowDialog();
         }
-        private void RefreshResources()
-        {
-            this.Resources.MergedDictionaries.Clear();
-            this.Resources.MergedDictionaries.Add(Application.LoadComponent(new Uri(@"lang\" + (Application.Current as App).currentLang + ".xaml", UriKind.Relative)) as ResourceDictionary);
-            rd = this.Resources.MergedDictionaries[0] as ResourceDictionary;
-        }
+        
         private void LangCn_Click(object sender, RoutedEventArgs e)
         {
             (Application.Current as App).currentLang = "zh-CN";
@@ -147,17 +182,6 @@ namespace Wad3_Viewer
             RefreshResources();
         }
 
-        private void Preview_Reset()
-        {
-            focusImageScale.ScaleX = focusImageScale.ScaleY = 1.0;
-            Canvas.SetLeft(focusImage, preview.ActualWidth / 2 - focusImage.ActualWidth / 2);
-            Canvas.SetTop(focusImage, preview.ActualHeight / 2 - focusImage.ActualHeight / 2);
-        }
-        private void Preview_Clear()
-        {
-            Preview_Reset();
-            focusImage.Source = null;
-            focusImageName.Text = rd["defualtTips"] as string;
-        }
+      
     }
 }

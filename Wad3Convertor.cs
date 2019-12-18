@@ -16,6 +16,8 @@ namespace Wad3Convertor
         public int width, height;
         public BitmapSource image;
         public BitmapSource fullImage;
+        public bool hasPalatte;
+        public List<Color> palatte;
 
         public Texture(WadLump lump)
         {
@@ -25,6 +27,32 @@ namespace Wad3Convertor
             this.height = (int)(lump.height);
             this.image = WadLumpToBitmapSource(lump, 0);
             this.fullImage = WadLumpToBitmapSource(lump, 1);
+
+            switch (lump.lumpInfo.type)
+            {
+                case 0x40:
+                    {
+                        hasPalatte = true;
+                        palatte = (lump as Lump40).palette;
+                        break;
+                    }
+                case 0x43:
+                    {
+                        hasPalatte = true;
+                        palatte = (lump as Lump43).palette;
+                        break;
+                    }
+                case 0x42:
+                case 0x46:
+                    {
+                        hasPalatte = false;
+                        break;
+                    }
+                default:
+                    {
+                        throw new Exception();
+                    }
+            }
         }
 
         private BitmapSource WadLumpToBitmapSource(WadLump lump, int mode)
@@ -33,6 +61,12 @@ namespace Wad3Convertor
             byte textureType = lump.lumpInfo.type;
             switch (lump.lumpInfo.type)
             {
+                case 0x42:
+                    {
+                        Lump42 tLump = (Lump42)lump;
+                        return BitmapSource.Create((int)tLump.width, (int)tLump.height, 96d, 96d, PixelFormats.Indexed8, new BitmapPalette(tLump.palette), tLump.data, (int)tLump.width);
+                    }
+                case 0x40:
                 case 0x43:
                     {
                         Lump43 tLump = (Lump43)lump;

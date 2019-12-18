@@ -65,4 +65,10 @@
     <sys:String x:Key="FormatNotSupported">
         Format not supported
     </sys:String>
+    <sys:String x:Key="Palatte">
+        Palatte
+    </sys:String>
+    <sys:String x:Key="NoPalatte">
+        No palatte available
+    </sys:String>
 </ResourceDictionary>
