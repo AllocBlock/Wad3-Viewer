@@ -234,6 +234,12 @@ namespace Wad3Parser
             Header header = new Header();
             header.Read(ref f);
 
+            if (new string(header.magic) != "WAD3")
+            {
+                //MessageBox.Show("非WAD3文件或文件损坏！", "错误", 0, MessageBoxIcon.Error);
+                return null;
+            }
+
             List<LumpInfo> lumpInfos = LumpInfo.ReadAll(ref f, header.number, header.offset);
             foreach (LumpInfo lumpInfo in lumpInfos)
             {

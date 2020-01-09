@@ -6,8 +6,9 @@
         xmlns:local="clr-namespace:Wad3_Viewer"
         mc:Ignorable="d"
         Title="{DynamicResource Title}" Height="450" Width="800"
+        AllowDrop="True"
         MinHeight="300" MinWidth="430">
-    <Grid>
+    <Grid Drop="Program_Drop">
         <Grid.RowDefinitions>
             <RowDefinition Height="20"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
@@ -15,7 +16,7 @@
         <Menu Grid.Row="0" Height="20" >
             <MenuItem Header="{DynamicResource File}">
                 <MenuItem Header="{DynamicResource Open}" Click="Open_MenuClick"></MenuItem>
-                <MenuItem Header="{DynamicResource ExportAll}" Click="Export_MenuClick"></MenuItem>
+                <MenuItem Header="{DynamicResource ExportAll}" Click="ExportAll_MenuClick"></MenuItem>
                 <MenuItem Header="{DynamicResource Exit}" Click="Exit_MenuClick"></MenuItem>
             </MenuItem>
             <MenuItem Header="{DynamicResource Setting}">

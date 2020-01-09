@@ -97,12 +97,21 @@ namespace Wad3_Viewer
                 fileName = dlg.FileName;
             else
                 return;
+            
+            OpenFile(fileName);
+        }
 
-
+        private void OpenFile(string fileName)
+        {
             table.Children.Clear();
             Parser wad3Parser = new Parser();
             List<WadLump> lumps = wad3Parser.Parse(fileName);
-
+            if (lumps == null)
+            {
+                
+                MessageBox.Show(rd["FileFormatError"] as string, rd["Error"] as string, 0);
+                return;
+            }
             foreach (WadLump lump in lumps)
             {
                 table.Children.Add(new TextureFrame(lump, new TextureFrame.SetFocusImage(this.SetFocusPic)));
@@ -153,7 +162,7 @@ namespace Wad3_Viewer
             PreviewReset();
         }
 
-        private void Export_MenuClick(object sender, RoutedEventArgs e)
+        private void ExportAll_MenuClick(object sender, RoutedEventArgs e)
         {
             ExportWindow ew = new ExportWindow(new Point(this.Left + this.ActualWidth / 2, this.Top + this.ActualHeight / 2 ), table.Children);
             ew.ShowDialog();
@@ -169,7 +178,13 @@ namespace Wad3_Viewer
             AboutWindow aw = new AboutWindow(new Point(this.Left + this.ActualWidth / 2, this.Top + this.ActualHeight / 2));
             aw.ShowDialog();
         }
-        
+
+        private void Program_Drop(object sender, DragEventArgs e)
+        {
+            string fileName = ((string[])e.Data.GetData(DataFormats.FileDrop))[0];
+            OpenFile(fileName);
+        }
+
         private void LangCn_Click(object sender, RoutedEventArgs e)
         {
             (Application.Current as App).currentLang = "zh-CN";

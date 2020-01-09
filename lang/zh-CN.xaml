@@ -71,6 +71,8 @@
     <sys:String x:Key="NoPalatte">
         无调色板
     </sys:String>
-    
+    <sys:String x:Key="FileFormatError">
+        非WAD3文件或文件已损坏！
+    </sys:String>
 
 </ResourceDictionary>
