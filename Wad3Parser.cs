@@ -76,7 +76,69 @@ namespace Wad3Parser
 
         public abstract void Read(ref BinaryReader f, LumpInfo lumpInfo);
     }
-    class Lump40 : Lump43 { }
+    class Lump40 : WadLump {
+        public char[] textureName;              // 4 the number of rows
+        public uint offset;                     // 4 offset of origin image
+        public uint offsetMipmap1;              // 4 offset of mipmap1
+        public uint offsetMipmap2;              // 4 offset of mipmap2
+        public uint offsetMipmap3;              // 4 offset of mipmap3
+        public byte[] dataMipmap1;                // width*height/4 data of mipmap1
+        public byte[] dataMipmap2;                // width*height/16 data of mipmap2
+        public byte[] dataMipmap3;                // width*height/64 data of mipmap3
+        public List<Color> palette;             // 256 * 3 palette data in RGB form
+        public override void Read(ref BinaryReader f, LumpInfo lumpInfo)
+        {
+            this.lumpInfo = lumpInfo;
+            f.BaseStream.Seek(lumpInfo.offset, SeekOrigin.Begin);
+
+            textureName = f.ReadChars(16);
+            width = f.ReadUInt32();
+            height = f.ReadUInt32();
+            offset = f.ReadUInt32();
+            offsetMipmap1 = f.ReadUInt32();
+            offsetMipmap2 = f.ReadUInt32();
+            offsetMipmap3 = f.ReadUInt32();
+
+            //f.BaseStream.Seek(offset, SeekOrigin.Begin);
+
+            int size = (int)(height * width);
+
+            data = new byte[size];
+            data = f.ReadBytes(size);
+
+            //f.BaseStream.Seek(offsetMipmap1, SeekOrigin.Begin);
+            dataMipmap1 = new byte[size / 4];
+            dataMipmap1 = f.ReadBytes(size / 4);
+
+
+            //f.BaseStream.Seek(offsetMipmap2, SeekOrigin.Begin);
+            dataMipmap2 = new byte[size / 16];
+            dataMipmap2 = f.ReadBytes(size / 16);
+
+
+            //f.BaseStream.Seek(offsetMipmap3, SeekOrigin.Begin);
+            dataMipmap3 = new byte[size / 64];
+            dataMipmap3 = f.ReadBytes(size / 64);
+
+            colorsUsed = f.ReadUInt16();
+
+            palette = new List<Color>(256);
+            f.ReadBytes(255 * 3); // 255个无用颜色
+            Color frontColor = new Color();
+            frontColor.R = f.ReadByte();
+            frontColor.G = f.ReadByte();
+            frontColor.B = f.ReadByte();
+            for (int i = 0; i < 256; i++)
+            {
+                Color t = new Color();
+                t.R = (byte)(frontColor.R * (i / 255.0));
+                t.G = (byte)(frontColor.G * (i / 255.0));
+                t.B = (byte)(frontColor.B * (i / 255.0));
+                t.A = 0xff;
+                palette.Add(t);
+            }
+        }
+    }
     class Lump42 : WadLump
     {
         public List<Color> palette;             // 256 * 3 palette data in RGB form
@@ -246,7 +308,7 @@ namespace Wad3Parser
                 WadLump lump = null;
                 if (lumpInfo.type == 0x40)
                 {
-                    lump = new Lump43();
+                    lump = new Lump40();
                 }
                 else if (lumpInfo.type == 0x42)
                 {
@@ -263,7 +325,7 @@ namespace Wad3Parser
                 }
                 else
                 {
-                    MessageBox.Show("纹理类型(0x"+ Convert.ToString(lumpInfo.type, 16) + ")不被支持", "错误", 0, MessageBoxIcon.Error);
+                    //MessageBox.Show("纹理类型(0x"+ Convert.ToString(lumpInfo.type, 16) + ")不被支持", "错误", 0, MessageBoxIcon.Error);
                     continue;
                 }
                 lump.Read(ref f, lumpInfo);

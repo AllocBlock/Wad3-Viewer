@@ -51,7 +51,7 @@
         作者：Allocblock
     </sys:String>
     <sys:String x:Key="Version">
-        版本：1.0
+        版本：1.1
     </sys:String>
     <sys:String x:Key="Error">
         错误

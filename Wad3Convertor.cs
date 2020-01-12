@@ -67,6 +67,21 @@ namespace Wad3Convertor
                         return BitmapSource.Create((int)tLump.width, (int)tLump.height, 96d, 96d, PixelFormats.Indexed8, new BitmapPalette(tLump.palette), tLump.data, (int)tLump.width);
                     }
                 case 0x40:
+                    {
+                        Lump40 tLump = (Lump40)lump;
+
+                        if (mode == 0)
+                        {
+                            return BitmapSource.Create((int)tLump.width, (int)tLump.height, 96d, 96d, PixelFormats.Indexed8, new BitmapPalette(tLump.palette), tLump.data, (int)tLump.width);
+                        }
+                        else
+                        {
+
+                            byte[] bytes = MipMapFormat(tLump.width, tLump.height, tLump.data, tLump.dataMipmap1, tLump.dataMipmap2, tLump.dataMipmap3);
+                            return BitmapSource.Create((int)tLump.width, (int)tLump.height * 3 / 2, 96d, 96d, PixelFormats.Indexed8, new BitmapPalette(tLump.palette), bytes, (int)tLump.width);
+                        }
+
+                    }
                 case 0x43:
                     {
                         Lump43 tLump = (Lump43)lump;
@@ -77,44 +92,8 @@ namespace Wad3Convertor
                         }
                         else
                         {
-                            int size = (int)(tLump.width * tLump.height);
-                            byte[] bytes = new byte[size * 3 / 2];
 
-                            // 全部置255
-                            for (int i = 0; i < size * 3 / 2; i++)
-                            {
-                                bytes[i] = 255;
-                            }
-
-                            for (int i = 0; i < size; i++)
-                            {
-                                bytes[i] = tLump.data[i];
-                            }
-
-                            for (int i = 0; i < tLump.height / 2; i++)
-                            {
-                                for (int j = 0; j < tLump.width / 2; j++)
-                                {
-                                    bytes[size + i * tLump.width + j] = tLump.dataMipmap1[i * tLump.width / 2 + j];
-                                }
-                            }
-
-                            for (int i = 0; i < tLump.height / 4; i++)
-                            {
-                                for (int j = 0; j < tLump.width / 4; j++)
-                                {
-                                    bytes[size + tLump.width / 2 + i * tLump.width + j] = tLump.dataMipmap2[i * tLump.width / 4 + j];
-                                }
-                            }
-
-                            for (int i = 0; i < tLump.height / 8; i++)
-                            {
-                                for (int j = 0; j < tLump.width / 8; j++)
-                                {
-                                    bytes[size + tLump.width / 2 + tLump.width / 4 + i * tLump.width + j] = tLump.dataMipmap3[i * tLump.width / 8 + j];
-                                }
-                            }
-
+                            byte[] bytes = MipMapFormat(tLump.width, tLump.height, tLump.data, tLump.dataMipmap1, tLump.dataMipmap2, tLump.dataMipmap3);
                             return BitmapSource.Create((int)tLump.width, (int)tLump.height * 3 / 2, 96d, 96d, PixelFormats.Indexed8, new BitmapPalette(tLump.palette), bytes, (int)tLump.width);
                         }
 
@@ -132,10 +111,49 @@ namespace Wad3Convertor
 
         }
 
-    }
-    class Wad3Convertor
-    {
-       
+        private byte[] MipMapFormat(uint width, uint height, byte[] data, byte[] dataMipmap1, byte[] dataMipmap2, byte[] dataMipmap3)
+        {
+            int size = (int)(width * height);
+            byte[] bytes = new byte[size * 3 / 2];
+
+            // 全部置255
+            for (int i = 0; i < size * 3 / 2; i++)
+            {
+                bytes[i] = 255;
+            }
+
+            for (int i = 0; i < size; i++)
+            {
+                bytes[i] = data[i];
+            }
+
+            for (int i = 0; i < height / 2; i++)
+            {
+                for (int j = 0; j < width / 2; j++)
+                {
+                    bytes[size + i * width + j] = dataMipmap1[i * width / 2 + j];
+                }
+            }
+
+            for (int i = 0; i < height / 4; i++)
+            {
+                for (int j = 0; j < width / 4; j++)
+                {
+                    bytes[size + width / 2 + i * width + j] = dataMipmap2[i * width / 4 + j];
+                }
+            }
+
+            for (int i = 0; i < height / 8; i++)
+            {
+                for (int j = 0; j < width / 8; j++)
+                {
+                    bytes[size + width / 2 + width / 4 + i * width + j] = dataMipmap3[i * width / 8 + j];
+                }
+            }
+
+            return bytes;
+        }
+
     }
 
 }
