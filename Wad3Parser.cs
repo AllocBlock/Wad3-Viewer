@@ -71,6 +71,7 @@ namespace Wad3Parser
         public byte[] data;                // width*height pixel data, each char save an index to palette
         public ushort colorsUsed;           // 2 the number of colors that are used(always 0x00 0x01?)
         public ushort padding;              // 2 use for padding
+        public List<Color> palette;             // 256 * 3 palette data in RGB form
 
         public LumpInfo lumpInfo;
 
@@ -85,13 +86,13 @@ namespace Wad3Parser
         public byte[] dataMipmap1;                // width*height/4 data of mipmap1
         public byte[] dataMipmap2;                // width*height/16 data of mipmap2
         public byte[] dataMipmap3;                // width*height/64 data of mipmap3
-        public List<Color> palette;             // 256 * 3 palette data in RGB form
+        
         public override void Read(ref BinaryReader f, LumpInfo lumpInfo)
         {
             this.lumpInfo = lumpInfo;
             f.BaseStream.Seek(lumpInfo.offset, SeekOrigin.Begin);
 
-            textureName = f.ReadChars(16);
+            textureName = Encoding.UTF7.GetChars(f.ReadBytes(16));
             width = f.ReadUInt32();
             height = f.ReadUInt32();
             offset = f.ReadUInt32();
@@ -141,7 +142,6 @@ namespace Wad3Parser
     }
     class Lump42 : WadLump
     {
-        public List<Color> palette;             // 256 * 3 palette data in RGB form
         public override void Read(ref BinaryReader f, LumpInfo lumpInfo)
         {
             this.lumpInfo = lumpInfo;
@@ -179,7 +179,6 @@ namespace Wad3Parser
         public byte[] dataMipmap1;                // width*height/4 data of mipmap1
         public byte[] dataMipmap2;                // width*height/16 data of mipmap2
         public byte[] dataMipmap3;                // width*height/64 data of mipmap3
-        public List<Color> palette;             // 256 * 3 palette data in RGB form
         public override void Read(ref BinaryReader f, LumpInfo lumpInfo)
         {
             this.lumpInfo = lumpInfo;
@@ -234,7 +233,6 @@ namespace Wad3Parser
         public uint rowCount;                   // 4 the number of rows
         public uint rowHeight;                  // 4 the height of a row
         public List<CharInfo> charInfo;         // 256 * 4 info about each character
-        public List<Color> palette;             // 256 * 3 palette data in RGB form
         public override void Read(ref BinaryReader f, LumpInfo lumpInfo)
         {
             this.lumpInfo = lumpInfo;
@@ -321,7 +319,6 @@ namespace Wad3Parser
                 else if (lumpInfo.type == 0x46)
                 {
                     lump = new Lump46();
-
                 }
                 else
                 {

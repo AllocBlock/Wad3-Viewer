@@ -31,21 +31,12 @@ namespace Wad3Convertor
             switch (lump.lumpInfo.type)
             {
                 case 0x40:
-                    {
-                        hasPalatte = true;
-                        palatte = (lump as Lump40).palette;
-                        break;
-                    }
                 case 0x43:
-                    {
-                        hasPalatte = true;
-                        palatte = (lump as Lump43).palette;
-                        break;
-                    }
                 case 0x42:
                 case 0x46:
                     {
-                        hasPalatte = false;
+                        hasPalatte = true;
+                        palatte = lump.palette;
                         break;
                     }
                 default:
