@@ -2,6 +2,7 @@
 ![avatar](/pic1.jpg)
 
 - 软件用于查看“金源”引擎的游戏（包括半条命、反恐精英）使用的纹理文件.wad
+- 关于WAD文件的历史、软件和格式介绍，可以参考我的这篇文章 [【简单解析】WAD文件](https://www.bilibili.com/read/cv4682202)
 - 功能
     - 查看wad3文件(.wad)
     - 支持0x40（喷图）、0x42（Quake纹理, qpic）、0x43（Mipmap纹理）和0x46（字体纹理）
